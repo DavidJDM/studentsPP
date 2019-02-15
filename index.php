@@ -10,14 +10,14 @@ session_start();
 //Create an instance of the Base class
 $f3 = Base::instance();
 
-//Debugging
-require_once '/home/tostrand/public_html/debug.php';
+////Debugging
+//require_once '/home/yvainilo/public_html/debug.php';
 
 //Connect to the database
 $dbh = connect();
 
 //Define a default route
-$f3->route('GET /', function($f3) {
+$f3->route('GET /', function ($f3) {
 
     $students = getStudents();
     $f3->set('students', $students);
@@ -28,15 +28,19 @@ $f3->route('GET /', function($f3) {
 });
 
 //Define a route to view a student summary
-$f3->route('GET /summary', function() {
+$f3->route('GET /summary/@sid',
 
-    //load a template
-    $template = new Template();
-    echo $template->render('views/view-student.html');
-});
+    function ($f3, $params) {
+
+        $sid = $params['sid'];
+
+        //load a template
+        $template = new Template();
+        echo $template->render('views/view-student.html');
+    });
 
 //Define a route to add a student
-$f3->route('GET|POST /add', function($f3) {
+$f3->route('GET|POST /add', function ($f3) {
 
     //print_r($_POST);
     /*
@@ -49,7 +53,7 @@ $f3->route('GET|POST /add', function($f3) {
      *          [submit] => Submit )
      */
 
-    if(isset($_POST['submit'])) {
+    if (isset($_POST['submit'])) {
 
         //Get the form data
         $sid = $_POST['sid'];
@@ -64,7 +68,7 @@ $f3->route('GET|POST /add', function($f3) {
         //Add the student
         $success = addStudent($sid, $last, $first, $birthdate,
             $gpa, $advisor);
-        if($success) {
+        if ($success) {
             $student = new Student($sid, $last, $first, $birthdate,
                 $gpa, $advisor);
             $_SESSION['student'] = $student;
