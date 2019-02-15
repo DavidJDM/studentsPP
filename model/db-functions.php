@@ -1,6 +1,6 @@
 <?php
 
-require("/home/tostrand/config.php");
+require("/home/dkovalev/config.php");
 
 function connect()
 {
