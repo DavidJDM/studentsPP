@@ -11,13 +11,12 @@ session_start();
 $f3 = Base::instance();
 
 //Debugging
-require_once '/home/tostrand/public_html/debug.php';
 
 //Connect to the database
 $dbh = connect();
 
 //Define a default route
-$f3->route('GET /', function($f3) {
+$f3->route('GET|POST /', function($f3) {
 
     $students = getStudents();
     $f3->set('students', $students);
@@ -28,7 +27,7 @@ $f3->route('GET /', function($f3) {
 });
 
 //Define a route to view a student summary
-$f3->route('GET /summary', function() {
+$f3->route('GET|POST /summary', function() {
 
     //load a template
     $template = new Template();
@@ -76,6 +75,13 @@ $f3->route('GET|POST /add', function($f3) {
     //load a template
     $template = new Template();
     echo $template->render('views/add-student.html');
+});
+
+$f3->route('GET|POST /roster', function() {
+
+    //load a template
+    $template = new Template();
+    echo $template->render('views/roster.html');
 });
 
 //Run fat free
